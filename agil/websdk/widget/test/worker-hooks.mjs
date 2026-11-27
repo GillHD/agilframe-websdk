@@ -1,5 +1,5 @@
 /** ESM loader hook used by register-loader.mjs (Node 20+). */
-export async function resolve(specifier, context, nextResolve) {
+export function resolve(specifier, context, nextResolve) {
   if (specifier === 'livekit-client/e2ee-worker?worker') {
     return {
       url: new URL('./stubs/e2ee-worker.mjs', import.meta.url).href,
