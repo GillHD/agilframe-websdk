@@ -1,5 +1,7 @@
 # Вклад в AgilFrame
 
+**Русский** · [English](CONTRIBUTING.en.md)
+
 Вопросы по установке сверяйте с [документацией](https://github.com/GillHD/agilframe-core/blob/main/docs/README.md). Для ошибки или предложения используйте [форму Issue](https://github.com/GillHD/agilframe-websdk/issues/new/choose). Об уязвимостях сообщайте [приватно](SECURITY.md).
 
 ## Issue

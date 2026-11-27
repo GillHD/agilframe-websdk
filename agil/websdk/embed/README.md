@@ -1,5 +1,7 @@
 # @agil/calls-embed
 
+[Web SDK packages](../README.md) · [Обзор Web SDK](https://github.com/GillHD/agilframe-websdk)
+
 Framework-agnostic `<agil-call>` Web Component for AgilFrame. It embeds the
 hosted `/embed.html` iframe in **inline** or **floating-launcher** mode, owns a
 strict postMessage bridge, maps iframe events to DOM events, and ships a safe
@@ -9,8 +11,7 @@ dependencies, no build step for consumers.
 - ESM: `dist/agil-call-embed.js` (auto-registers the element)
 - IIFE: `dist/agil-call-embed.iife.js` (global `AgilCallEmbed`, auto-registers)
 - Types: `dist/types/index.d.ts`
-- Full integrator guide: `agil/core/docs/embed-module.md` in the AgilFrame repository
-  (not shipped in this package, so npm does not render a broken relative link).
+- [Full integration guide](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/embed-module.md)
 
 ## Install
 
@@ -160,7 +161,7 @@ call.addEventListener('agil-error', (event) => {
 ```
 
 Large-room details and the shared snapshot/delta rules are documented in
-[`agil/core/docs/webview-large-rooms.md`](../../core/docs/webview-large-rooms.md).
+[Large-room WebView behavior](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/webview-large-rooms.md).
 
 ## Modes
 

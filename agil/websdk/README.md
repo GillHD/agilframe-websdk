@@ -1,14 +1,16 @@
-# AGIL Web SDK
+# AgilFrame Web SDK packages
 
-Browser-facing embedding surface: the call widget, the script SDK, the
-framework-agnostic Web Component and the demo/landing host app.
+[Repository overview](../../README.en.md) · [Обзор на русском](../../README.md)
+
+This directory contains the call widget, the script SDK, the
+framework-independent Web Component, and demo pages for browser integrations.
 
 ```
 websdk/
 ├─ widget   @agil/calls-widget        embeddable UI + WebRTC/SFU engine (ES module + CSS)
 ├─ sdk      @agil/calls-sdk           agil-calls.js — global AGILCalls, iframe mode
 ├─ embed    @agil/calls-embed         <agil-call> Web Component + postMessage bridge
-└─ demo     @agil/demo                demo/landing/embed.html host app (/)
+└─ demo     @agil/demo                example pages, including /embed.html
 ```
 
 ## Consuming core contracts
@@ -21,8 +23,8 @@ Relative source aliases (see each `vite.config.ts` / `tsconfig.json`):
 
 ```
 agil/websdk/widget  ->  ../../core/packages/protocol/src/index.ts
-agil/websdk/sdk     ->  ../../core/packages/protocol, ../../core/packages/widget
-agil/websdk/demo    ->  ../../core/packages/{protocol,widget,sdk}
+agil/websdk/sdk     ->  ../../core/packages/protocol, ../widget
+agil/websdk/demo    ->  ../../core/packages/protocol, ../widget, ../sdk
 ```
 
 ## Commands (from the repository root)

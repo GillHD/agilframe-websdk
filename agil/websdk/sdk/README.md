@@ -1,5 +1,7 @@
 # @agil/calls-sdk
 
+**Русский** · [English](README.en.md)
+
 SDK-обёртка AgilFrame: глобальный `AGILCalls` (один самодостаточный скрипт) и
 ESM-сборка. Внутрь IIFE встроены виджет, `@agil/protocol`, zod и CSS — достаточно
 одного `<script>`.
@@ -22,7 +24,7 @@ CSS инжектится автоматически при `mount()`/`resume()` 
 ```html
 <script src="http://localhost:8787/sdk/agil-calls.js"></script>
 <div id="call" style="height:640px"></div>
-<script>
+<script type="module">
   const call = await AGILCalls.mount('#call', {
     serverUrl: 'http://localhost:8787',
     tenantId: 'demo',
@@ -56,9 +58,9 @@ call.on('remote-stream', attachStream);
 call.raiseHand(); call.sendReaction('👍'); await call.sendChat('привет');
 ```
 
-Встроенная разметка не рендерится; контроллер сам входит в комнату, публикует
-медиа, принимает chat/state/polls. Полный гайд, примеры Vanilla/React/Svelte,
-`iconUrls`, `customCss` и security-замечания — `agil/core/docs/custom-ui.md`.
+В режиме `headless` контроллер входит в комнату, публикует медиа и передаёт
+сообщения, состояние звонка и события опросов. Руководство содержит примеры для Vanilla JS,
+React и Svelte и описывает `iconUrls`, `customCss` и правила безопасности. [Свой интерфейс](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/custom-ui.md)
 
 ESM:
 
@@ -90,15 +92,17 @@ document.body.append(iframe!);
 От родителя в iframe:
 
 ```js
-iframe.contentWindow.postMessage({ type: 'agil:config', config: patch }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:theme', theme: patch }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:scheme', scheme: 'dark' }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:action', action: 'toggle-mic' }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:action', action: 'minimize' }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:action', action: 'restore' }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:action', action: 'pip' }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:chat-send', text: 'привет' }, '*');
-iframe.contentWindow.postMessage({ type: 'agil:ping' }, '*');
+const targetOrigin = new URL(iframe.src).origin;
+const send = (message) => iframe.contentWindow.postMessage(message, targetOrigin);
+send({ type: 'agil:config', config: patch });
+send({ type: 'agil:theme', theme: patch });
+send({ type: 'agil:scheme', scheme: 'dark' });
+send({ type: 'agil:action', action: 'toggle-mic' });
+send({ type: 'agil:action', action: 'minimize' });
+send({ type: 'agil:action', action: 'restore' });
+send({ type: 'agil:action', action: 'pip' });
+send({ type: 'agil:chat-send', text: 'Привет' });
+send({ type: 'agil:ping' });
 ```
 
 Из iframe родителю: `agil:ready` (capabilities), `agil:event` (все события
@@ -152,7 +156,7 @@ const call2 = await AGILCalls.mount('#call', { room: '', resume: true });
 - `config.layout.chrome = 'none'` — рендер без шапки/фона, как часть страницы
   компании; `inheritHostStyles` — наследовать шрифт/цвета хоста.
 - Мессенджер-сценарий (1:1/группы, отключённый встроенный чат, fullscreen,
-  новая вкладка, мини-окно) — [agil/core/docs/messenger.md](../../core/docs/messenger.md).
+  новая вкладка, мини-окно). [Интеграция с мессенджером](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/messenger.md)
 
 ## Внешний чат, фоны и провайдеры
 
@@ -172,7 +176,7 @@ const call2 = await AGILCalls.mount('#call', { room: '', resume: true });
 
 ## Ограничения
 
-- Mesh-топология до 8 участников (SFU — roadmap).
+- Вместимость комнаты зависит от режима передачи медиа и профиля развёртывания. [Масштабирование](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/scaling.md)
 - Блюр/фон и liveness зависят от CDN MediaPipe; при недоступности — деградация
   с флагом `degraded`, без падения звонка.
 - Web Speech API — Chrome/Edge; серверный STT — fallback.

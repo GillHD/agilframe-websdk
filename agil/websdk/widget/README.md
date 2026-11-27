@@ -1,10 +1,11 @@
 # @agil/calls-widget
 
-Встраиваемый UI видеозвонков AgilFrame: WebRTC-mesh (до 8 участников) и
-SFU-комнаты до 200 участников (25–36 плиток на страницу, видео только для
-видимой страницы/пина/спикера, аудио — для всех), темы на дизайн-токенах, чат
-(встроенный/внешний), блюр и замена фона, запись, субтитры, заметки,
-знания-ассистент, мини-режим и работа без сети.
+**Русский** · [English](README.en.md)
+
+Встраиваемый интерфейс звонков AgilFrame с поддержкой WebRTC mesh и SFU.
+Виджет включает темы, чат, фоны, запись, субтитры, заметки и плавающую панель
+звонка. Доступность функций зависит от настроек организации, прав участника
+и поддержки браузером. [Контракт интеграции](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/contract.md)
 
 Один ES-бандл + CSS, без фреймворков. Публичный API соответствует `agil/core/docs/contract.md`
 §6 (и §22 для мини-режима/внешнего чата).
@@ -111,7 +112,7 @@ call.openInNewTab();             // Window|null; при блокировке pop
 ## Звонок в мессенджере
 
 Сценарий «позвонить из корпоративного чата» (1:1 P2P или группа) описан в
-[agil/core/docs/messenger.md](../../core/docs/messenger.md). Что даёт виджет:
+[agil/core/docs/messenger.md](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/messenger.md). Что даёт виджет:
 
 - **Чат не нужен:** `session.chat.ui='hidden'` (или `providers.chat.mode='external'`)
   — встроенная панель и кнопка скрыты, чат остаётся мессенджерным;
@@ -135,7 +136,7 @@ call.openInNewTab();             // Window|null; при блокировке pop
 ## Ассистент в звонке
 
 In-call AI-агент с правами пользователя и spotlight-подсказками
-([agil/core/docs/in-call-agent.md](../../core/docs/in-call-agent.md)). Панель — обычный чат:
+([agil/core/docs/in-call-agent.md](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/in-call-agent.md)). Панель — обычный чат:
 
 - видимость: `config.session.inCallAgent.enabled` (по умолчанию включён).
   Права не скрывают панель — они фильтруют **действия**: агент не сможет
@@ -173,7 +174,7 @@ E2E-хуки: `data-agil-assistant-ready="true"` на корне,
 `[data-agil-assistant-send]`, `[data-agil-assistant-message]`,
 `[data-agil-assistant-answer]`, `[data-agil-spotlight-target]`.
 Подключение внешней LLM (endpoint, HMAC, формат ответа):
-[agil/core/docs/llm-integrations.md](../../core/docs/llm-integrations.md).
+[agil/core/docs/llm-integrations.md](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/llm-integrations.md).
 
 ## Темы
 
@@ -282,7 +283,7 @@ transcript,assistant,recording,fullscreen,newtab,minimize,settings,leave`.
   плюс captions; 9+ — плюс recording. Остальное — в одном «⋯». Панели
   participants/notes/transcript не дублируются (они в шапке), все кнопки
   44×44, `bar` на ≤640 px сворачивается в `island`. Геометрия и решения
-  описаны в [call-ui-v3.md](../../core/docs/call-ui-v3.md); на корне —
+  описаны в [call-ui-v3.md](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/call-ui-v3.md); на корне —
   `data-agil-density="solo|duo|group|large"`.
 - `hiddenControls` не отключает функцию: `toggleMic()`/шорткаты продолжают
   работать; для полного отключения — `features.*`/`accessPolicy`.
@@ -295,7 +296,7 @@ transcript,assistant,recording,fullscreen,newtab,minimize,settings,leave`.
 
 ## Вебинары и стримы (broadcast)
 
-UI-часть масштабирования ([agil/core/docs/scaling.md](../../core/docs/scaling.md)):
+UI-часть масштабирования ([agil/core/docs/scaling.md](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/scaling.md)):
 
 - эффективный режим: `welcome.room.mediaMode` (`mesh|sfu|broadcast`), иначе
   `config.scale.mediaMode` + `scale.webinar` (enabled + mediaMode != mesh →
@@ -313,8 +314,8 @@ UI-часть масштабирования ([agil/core/docs/scaling.md](../../
   показывается «Сообщение отправлено на модерацию» (и при ошибке/статусе от
   сервера про модерацию).
 
-Серверный receive-only и SFU/broadcast-медиаплейн — отдельный этап (в MVP
-реально работает mesh до 8; UI готов к broadcast заранее).
+Сервер управляет режимом передачи медиа и правами публикации. Вместимость
+комнаты зависит от профиля развёртывания.
 
 ## Ограничения (честно)
 
