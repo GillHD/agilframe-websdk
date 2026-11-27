@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <title>AgilFrame — custom UI (headless)</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --page-bg: #070b12;
+        --panel: #111827;
+        --panel-2: #0f172a;
+        --line: #24324a;
+        --text: #e5edf8;
+        --muted: #93a4bc;
+        --accent: #22c55e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 24px;
+        background: radial-gradient(circle at 20% 0%, #142036, var(--page-bg) 55%);
+        color: var(--text);
+        font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+      h1 { margin: 0 0 4px; font-size: 22px; }
+      p { margin: 0 0 18px; color: var(--muted); }
+      .layout { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
+      @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+      .card { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+      .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+      .row label { min-width: 0; max-width: 100%; }
+      label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+      input, button, textarea { font: inherit; }
+      input {
+        min-width: 0; padding: 9px 10px; border-radius: 9px; border: 1px solid var(--line);
+        background: var(--panel-2); color: var(--text);
+      }
+      button {
+        padding: 9px 13px; border-radius: 9px; border: 1px solid var(--line);
+        background: var(--panel-2); color: var(--text); cursor: pointer;
+      }
+      button:hover { border-color: var(--accent); }
+      button.primary { background: var(--accent); border-color: var(--accent); color: #04140a; font-weight: 650; }
+      button.is-active { outline: 2px solid var(--accent); }
+      button:disabled { opacity: .55; cursor: default; }
+      .status { font-size: 13px; color: var(--muted); min-height: 20px; }
+      .status[data-kind='error'] { color: #fca5a5; }
+      .status[data-kind='ok'] { color: #86efac; }
+      #custom-ui-stage { min-height: 420px; }
+      /* This is the root the widget owns; the headless UI is appended inside. */
+      #custom-ui-stage > .agil-root { min-height: 0; }
+      .cui { display: grid; gap: 12px; }
+      .cui-videos { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); }
+      .cui-tile { position: relative; margin: 0; overflow: hidden; border-radius: 12px; border: 1px solid var(--line); background: #050912; aspect-ratio: 16 / 9; }
+      .cui-tile video { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .cui-tile figcaption { position: absolute; left: 8px; bottom: 8px; padding: 2px 7px; border-radius: 999px; background: #0009; font-size: 12px; }
+      .cui-toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
+      .cui-recording-dialog {
+        width: min(420px, calc(100vw - 32px)); max-height: calc(100dvh - 32px);
+        padding: 20px; border: 1px solid var(--line); border-radius: 14px;
+        background: var(--panel); color: var(--text);
+      }
+      .cui-recording-dialog::backdrop { background: #050912b8; }
+      .cui-recording-dialog h2 { margin: 0 0 8px; font-size: 18px; }
+      .cui-dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+      #cui-recording:not([hidden]) {
+        display: flex; align-items: center; gap: 8px; justify-self: start;
+        padding: 5px 10px; border: 1px solid #944248; border-radius: 9px;
+        background: #351c23; color: #ffd4d8; font-size: 13px; font-weight: 600;
+      }
+      #cui-recording::before { content: ''; width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: #ff7885; }
+      .cui-chat { display: grid; grid-template: 1fr auto / minmax(0, 1fr); gap: 10px; min-height: 240px; }
+      .cui-chat-log { overflow: auto; max-height: 320px; display: grid; gap: 6px; align-content: start; }
+      .cui-chat-msg { padding: 6px 8px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line); word-break: break-word; }
+      .cui-chat-msg b { color: #bfdbfe; font-weight: 600; }
+      .cui-chat-form { display: flex; gap: 8px; }
+      .cui-chat-form input { flex: 1; }
+      .cui-reactions { min-height: 22px; color: #fde68a; font-size: 13px; }
+      .cui-participants { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <h1>Свой интерфейс звонка</h1>
+    <p>
+      Интерфейс звонка отрисовывает эта страница. Публичный SDK подключает участников, управляет медиа
+      и передаёт события через <code>AGILCalls.mount(..., { ui: 'headless' })</code>.
+    </p>
+
+    <div class="layout">
+      <section class="card">
+        <form id="cui-join-form" class="row">
+          <label>Сервер <input id="cui-server" value="" placeholder="http://localhost:8787" /></label>
+          <label>Комната <input id="cui-room" value="custom-ui" /></label>
+          <label>Имя <input id="cui-name" value="Гость" /></label>
+          <label>Токен (необязательно) <input id="cui-token" type="password" autocomplete="off" spellcheck="false" placeholder="JWT" /></label>
+          <button class="primary" type="submit">Войти</button>
+        </form>
+        <p id="cui-status" class="status" role="status" aria-live="polite"></p>
+        <div id="custom-ui-stage" aria-label="Кастомный интерфейс звонка"></div>
+      </section>
+
+      <aside class="card">
+        <h2 style="margin:0 0 10px;font-size:16px">Участники</h2>
+        <ul id="cui-participants" class="cui-participants"></ul>
+        <h2 style="margin:16px 0 10px;font-size:16px">Чат</h2>
+        <div class="cui-chat">
+          <div id="cui-chat-log" class="cui-chat-log" role="log" aria-live="polite"></div>
+          <form id="cui-chat-form" class="cui-chat-form">
+            <input id="cui-chat-input" maxlength="4000" placeholder="Сообщение" aria-label="Сообщение" />
+            <button type="submit">Отправить</button>
+          </form>
+        </div>
+        <div id="cui-reactions" class="cui-reactions" aria-live="polite"></div>
+      </aside>
+    </div>
+
+    <script type="module" src="/src/custom-ui.ts"></script>
+  </body>
+</html>

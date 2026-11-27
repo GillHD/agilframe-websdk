@@ -1,0 +1,23 @@
+name: Предложить доработку
+description: Пользовательский или технический сценарий с критериями приёмки
+labels: [enhancement]
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Пользователь и задача
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Предлагаемый результат
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии приёмки
+      description: Что нужно проверить и какие ограничения важны
+    validations:
+      required: true

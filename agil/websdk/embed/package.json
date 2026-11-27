@@ -1,0 +1,48 @@
+{
+  "name": "@agil/calls-embed",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-agnostic <agil-call> Web Component for the AgilFrame embed.html iframe: safe URL builder, origin-checked postMessage bridge, themes, launcher/inline modes",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "keywords": [
+    "agil",
+    "calls",
+    "webrtc",
+    "web-component",
+    "custom-element",
+    "iframe",
+    "embed"
+  ],
+  "main": "./dist/agil-call-embed.js",
+  "module": "./dist/agil-call-embed.js",
+  "types": "./dist/types/index.d.ts",
+  "unpkg": "./dist/agil-call-embed.iife.js",
+  "jsdelivr": "./dist/agil-call-embed.iife.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/agil-call-embed.js",
+      "default": "./dist/agil-call-embed.js"
+    },
+    "./iife": "./dist/agil-call-embed.iife.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./dist/agil-call-embed.js"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "dev": "vite build --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"test/*.test.ts\"",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

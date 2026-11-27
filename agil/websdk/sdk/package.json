@@ -1,0 +1,22 @@
+{
+  "name": "@agil/calls-sdk",
+  "version": "0.1.0",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AgilFrame embeddable JavaScript SDK (global AGILCalls + iframe mode)",
+  "main": "./dist/agil-calls-sdk.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/agil-calls-sdk.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

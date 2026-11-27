@@ -1,0 +1,33 @@
+{
+  "name": "agilframe-websdk",
+  "version": "0.1.0",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "agil/websdk/*",
+    "agil/core/packages/protocol"
+  ],
+  "scripts": {
+    "build:protocol": "npm run build -w @agil/protocol",
+    "build:widget": "npm run build -w @agil/calls-widget",
+    "build:sdk": "npm run build -w @agil/calls-sdk",
+    "build:embed": "npm run build -w @agil/calls-embed",
+    "build:demo": "npm run build -w @agil/demo",
+    "build": "npm run build:protocol && npm run build:widget && npm run build:sdk && npm run build:embed && npm run build:demo",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm test -w @agil/protocol && npm test -w @agil/calls-widget && npm test -w @agil/calls-embed",
+    "dev": "npm run dev -w @agil/demo"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/ws": "^8.18.0",
+    "puppeteer-core": "^25.17.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.6"
+  }
+}

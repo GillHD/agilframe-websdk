@@ -1,0 +1,30 @@
+{
+  "name": "@agil/calls-widget",
+  "version": "0.1.0",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Embeddable AgilFrame UI (WebRTC, themes, chat, background blur)",
+  "main": "./dist/agil-calls-widget.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/agil-calls-widget.js"
+    },
+    "./style.css": "./dist/agil-calls-widget.css"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --import tsx --import ./test/register-loader.mjs --test test/errors.test.ts test/whiteboard.test.ts test/custom-ui.test.ts test/noise-detection.test.ts test/liveness.test.ts test/large-room.test.ts test/gallery-budget.test.ts test/gallery-frame-cache.test.ts test/sfu-policy.test.ts test/resume-state.test.ts test/recording.test.ts test/controls-density.test.ts test/embedded-chrome.test.ts test/embedded-layout.test.ts test/slot-layout.test.ts test/connection-status.test.ts test/participant-integrity.test.ts test/media-badge.test.ts test/audio-output.test.ts"
+  },
+  "dependencies": {
+    "livekit-client": "2.24.0"
+  }
+}

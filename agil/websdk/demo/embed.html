@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="theme-color" content="#f3f6fb" />
+    <title>AgilFrame</title>
+    <style>
+      /* Light is the default; the OS preference (and the ?theme= param handled
+         in embed.ts) repaints both html and body. The widget root covers the
+         viewport, but a light iframe must not flash a #080d16 page on load or
+         show dark bands around rounded cards on the join screen. */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #f3f6fb;
+        color-scheme: light;
+        overflow: hidden;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        html,
+        body {
+          background: #080d16;
+          color-scheme: dark;
+        }
+      }
+
+      #embed-root {
+        width: 100%;
+        height: 100%;
+      }
+
+      #embed-root > .agil-root {
+        min-height: 0;
+      }
+
+      #embed-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: #334155;
+        font: 14px/1.4 system-ui, -apple-system, 'Segoe UI', sans-serif;
+        text-align: center;
+        padding: 24px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        #embed-loading {
+          color: #cbd5e1;
+        }
+      }
+
+      /* embed.ts sets this attribute once the effective theme is known. */
+      [data-embed-scheme='light'] #embed-loading {
+        color: #334155;
+      }
+
+      [data-embed-scheme='dark'] #embed-loading {
+        color: #cbd5e1;
+      }
+
+      #embed-loading.is-hidden {
+        display: none;
+      }
+
+      #embed-loading h1 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="embed-root"></div>
+    <div id="embed-loading">
+      <h1>AgilFrame</h1>
+      <span id="embed-loading-text" role="status">Подключение к комнате…</span>
+    </div>
+    <script type="module" src="/src/embed.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "size": 360,
+  "frames": 18,
+  "expressions": {
+    "wave": {
+      "label": "Приветствие",
+      "animated": "/branding/mascot/animated/mascot-wave.webp",
+      "static": "/branding/mascot/mascot-wave.png",
+      "avatar": "/branding/mascot/animated/avatar-wave.webp"
+    },
+    "celebrate": {
+      "label": "Успех",
+      "animated": "/branding/mascot/animated/mascot-celebrate.webp",
+      "static": "/branding/mascot/mascot-celebrate.png",
+      "avatar": "/branding/mascot/animated/avatar-celebrate.webp"
+    },
+    "angry": {
+      "label": "Критическое изменение",
+      "animated": "/branding/mascot/animated/mascot-angry.webp",
+      "static": "/branding/mascot/mascot-angry.png",
+      "avatar": "/branding/mascot/animated/avatar-angry.webp"
+    },
+    "thumbsup": {
+      "label": "Всё в порядке",
+      "animated": "/branding/mascot/animated/mascot-thumbsup.webp",
+      "static": "/branding/mascot/mascot-thumbsup.png",
+      "avatar": "/branding/mascot/animated/avatar-thumbsup.webp"
+    },
+    "thinking": {
+      "label": "Уточняющий вопрос",
+      "animated": "/branding/mascot/animated/mascot-thinking.webp",
+      "static": "/branding/mascot/mascot-thinking.png",
+      "avatar": "/branding/mascot/animated/avatar-thinking.webp"
+    },
+    "alert": {
+      "label": "Предупреждение",
+      "animated": "/branding/mascot/animated/mascot-alert.webp",
+      "static": "/branding/mascot/mascot-alert.png",
+      "avatar": "/branding/mascot/animated/avatar-alert.webp"
+    }
+  }
+}

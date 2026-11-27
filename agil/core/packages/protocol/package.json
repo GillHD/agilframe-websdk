@@ -1,0 +1,26 @@
+{
+  "name": "@agil/protocol",
+  "version": "0.1.0",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared contracts for AgilFrame: theme tokens, tenant config, signaling protocol, quality policy",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./token": {
+      "types": "./dist/token.d.ts",
+      "import": "./dist/token.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"test/*.test.ts\""
+  }
+}

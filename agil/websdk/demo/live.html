@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0b1220" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <title>AgilFrame — трансляция</title>
+    <link rel="stylesheet" href="/src/live.css" />
+  </head>
+  <body>
+    <main class="live-shell">
+      <header class="live-header">
+        <a class="live-brand" href="/" aria-label="AgilFrame — на главную">
+          <img src="/branding/agil-icon-256.png" alt="" width="28" height="28" />
+          <span>AgilFrame</span>
+        </a>
+        <span class="live-badge" id="live-badge"><span class="live-dot" aria-hidden="true"></span> Трансляция</span>
+        <a class="live-link" href="/">Создать звонок</a>
+      </header>
+
+      <section class="live-stage">
+        <div class="live-frame">
+          <video id="live-video" class="live-video" controls playsinline preload="metadata" aria-label="Видеотрансляция" inert></video>
+          <div class="live-overlay" id="live-overlay">
+            <div class="live-card">
+              <p id="live-status" role="status" tabindex="-1">Подключаемся к трансляции…</p>
+              <button id="live-start" class="live-btn" type="button" hidden>Воспроизвести</button>
+              <button id="live-retry" class="live-btn" type="button" hidden>Повторить подключение</button>
+            </div>
+          </div>
+        </div>
+        <div class="live-meta">
+          <h1 id="live-title">Трансляция AgilFrame</h1>
+          <button id="live-sound" class="live-btn live-btn-ghost" type="button" aria-pressed="false">Включить звук</button>
+        </div>
+      </section>
+
+      <footer class="live-footer">
+        <span>AgilFrame · видеозвонки под вашим брендом</span>
+        <a href="/docs">Документация</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/live.ts"></script>
+  </body>
+</html>

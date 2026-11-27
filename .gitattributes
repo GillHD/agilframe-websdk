@@ -1,0 +1,10 @@
+* text=auto eol=lf
+# Keep shell entry points LF even on Windows checkouts: a CRLF shebang or
+# `set -euo pipefail\r` breaks `./install.sh` on Linux hosts.
+*.sh text eol=lf
+
+# Helm templates and chart sources are consumed by Linux tooling.
+agil/infra/helm/** text eol=lf
+agil/infra/terraform/** text eol=lf
+agil/infra/quickstart/** text eol=lf
+agil/infra/node/** text eol=lf

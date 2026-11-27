@@ -1,0 +1,25 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "types": [
+      "vite/client"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@agil/protocol": [
+        "../../core/packages/protocol/src/index.ts"
+      ],
+      "@agil/calls-widget": [
+        "../widget/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

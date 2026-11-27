@@ -1,0 +1,106 @@
+<!doctype html>
+<!--
+  Stage 3b example: 200-participant room with `<agil-call>`.
+
+  The element keeps the canonical participant set and emits:
+    - agil-participants { participants: { kind: 'snapshot', ids, count, revision } }
+    - agil-participants { participants: { kind: 'delta', added, removed, ... } }
+    - agil-connection   { connection: { state, previous, reconnecting, attempt, delayMs } }
+
+  `agil-state` no longer carries the full `participantIds` array. Open this file
+  from a local static server (the component is an ES module build):
+    npx vite build --config agil/websdk/embed/vite.config.ts
+    npx serve agil/websdk/embed
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>AgilFrame — large room embed</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #080d16;
+        color: #e2e8f0;
+        font: 14px/1.4 system-ui, sans-serif;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      agil-call {
+        display: block;
+        height: min(78vh, 720px);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      pre {
+        max-height: 26vh;
+        overflow: auto;
+        padding: 12px;
+        background: #0b1220;
+        border-radius: 8px;
+        font-size: 12px;
+      }
+    </style>
+    <script type="module" src="../dist/agil-call-embed.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Large room (200 participants)</h1>
+      <agil-call
+        id="call"
+        server-url="https://calls.example.com"
+        room="large-room-1"
+        token="REPLACE_WITH_SHORT_LIVED_JOIN_TOKEN"
+        tenant="demo"
+        name="Web host"
+        theme="auto"
+        language="en"
+        max-participants="200"
+      ></agil-call>
+      <pre id="log" aria-live="polite"></pre>
+    </main>
+
+    <script type="module">
+      const call = document.getElementById('call');
+      const log = document.getElementById('log');
+      /** @type {Set<string>} */
+      const participants = new Set();
+
+      function append(line) {
+        log.textContent = `${new Date().toISOString()}  ${line}\n${log.textContent}`.slice(0, 8000);
+      }
+
+      call.addEventListener('agil-participants', (event) => {
+        const update = event.detail.participants;
+        if (update.kind === 'snapshot') {
+          participants.clear();
+          for (const id of update.ids ?? []) participants.add(id);
+        } else {
+          for (const id of update.removed) participants.delete(id);
+          for (const id of update.added) participants.add(id);
+        }
+        append(`participants ${update.kind}: count=${update.count} rendered=${participants.size} rev=${update.revision}`);
+      });
+
+      call.addEventListener('agil-connection', (event) => {
+        const connection = event.detail.connection;
+        append(`connection ${connection.state}${connection.attempt ? ` attempt=${connection.attempt}` : ''}`);
+      });
+
+      call.addEventListener('agil-state', (event) => {
+        // No participantIds array here: only count/revision on large rooms.
+        append(`state phase=${event.detail.state.phase} participants=${event.detail.state.participantCount ?? event.detail.state.participants}`);
+      });
+
+      call.addEventListener('agil-error', (event) => {
+        append(`error ${event.detail.code}: ${event.detail.message}`);
+        // The element's own Retry button rebuilds the iframe; server, room and
+        // token stay in the URL so a reconnect cannot lose them.
+      });
+    </script>
+  </body>
+</html>

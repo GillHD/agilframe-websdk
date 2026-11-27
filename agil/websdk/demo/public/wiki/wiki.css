@@ -1,0 +1,205 @@
+:root {
+  color-scheme: light dark;
+  --page: #f4f7fc;
+  --surface: #fff;
+  --ink: #17243a;
+  --muted: #465971;
+  --line: #d4dfed;
+  --accent: #1548ad;
+  --accent-surface: #e9f1ff;
+  --intro-end: #f0edff;
+  --header-control-height: 44px;
+  --header-block-padding: .7rem;
+  --shell-padding: clamp(.85rem, 3vw, 1.75rem);
+  font: clamp(.875rem, 1.07vw, 1rem)/1.6 system-ui, sans-serif;
+  background: var(--page);
+  color: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0c1421;
+    --surface: #142136;
+    --ink: #ecf2fc;
+    --muted: #becde1;
+    --line: #3c506c;
+    --accent: #aec8ff;
+    --accent-surface: #203759;
+    --intro-end: #26223d;
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: var(--accent); text-underline-offset: .2em; }
+a:focus-visible, .table-scroll:focus-visible, .wiki-menu-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  z-index: 2;
+  left: .75rem;
+  top: .75rem;
+  padding: .65rem 1rem;
+  border-radius: .5rem;
+  background: var(--surface);
+  transform: translateY(calc(-100% - 1rem));
+}
+.skip:focus { transform: none; }
+
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.site-header-inner {
+  max-width: 83rem;
+  margin-inline: auto;
+  padding: var(--header-block-padding) var(--shell-padding);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .4rem 1.5rem;
+  flex-wrap: wrap;
+}
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: var(--header-control-height);
+  color: var(--ink);
+  font-weight: 780;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.site-brand img { width: 32px; height: 32px; }
+.wiki-menu-toggle {
+  display: none;
+  align-items: center;
+  gap: .4rem;
+  min-height: var(--header-control-height);
+  padding: .35rem .65rem;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+:root[data-wiki-compact] .wiki-menu-toggle:not([hidden]) { display: inline-flex; }
+.wiki-menu-toggle[aria-expanded="true"] { background: var(--accent-surface); }
+:root[data-wiki-compact][data-wiki-navigation="closed"] .site-header nav,
+:root[data-wiki-compact][data-wiki-navigation="closed"] .shell > aside { display: none; }
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem .35rem;
+}
+.site-header nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--header-control-height);
+  padding: .35rem .6rem;
+  border-radius: .55rem;
+  text-decoration: none;
+}
+.site-header nav a:hover { background: var(--accent-surface); }
+
+.shell {
+  max-width: 83rem;
+  margin-inline: auto;
+  padding: var(--shell-padding);
+  display: grid;
+  grid-template-columns: minmax(11rem, 14rem) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 3.25rem);
+}
+aside nav {
+  position: sticky;
+  top: 1rem;
+  max-block-size: calc(100dvh - var(--header-control-height) - 2 * var(--header-block-padding) - var(--shell-padding) - 1px - 1rem);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  display: grid;
+  gap: .2rem;
+  padding: .85rem;
+  border: 1px solid var(--line);
+  border-radius: .85rem;
+  background: var(--surface);
+}
+aside strong { padding-inline: .45rem; }
+aside nav a {
+  min-width: 0;
+  padding: .28rem .45rem;
+  border-radius: .4rem;
+  font-size: .94rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+aside nav a:hover { background: var(--accent-surface); }
+main { min-width: 0; max-width: 61rem; padding-block-end: 4rem; overflow-wrap: anywhere; }
+main img { max-width: 100%; height: auto; }
+.page-intro {
+  border: 1px solid var(--line);
+  border-radius: 1.15rem;
+  background: linear-gradient(130deg, var(--accent-surface), var(--intro-end));
+  padding: clamp(1rem, 3vw, 1.65rem);
+}
+h1, h2, h3 { line-height: 1.18; overflow-wrap: anywhere; hyphens: auto; }
+h1 { font-size: clamp(1.65rem, 2.7vw, 2.35rem); margin: 0 0 .55rem; }
+h2 { font-size: clamp(1.3rem, 1.8vw, 1.45rem); margin-block: .9rem .6rem; }
+h3 { font-size: 1.1rem; }
+.lead { max-width: 68ch; margin: 0; font-size: 1.03rem; color: var(--muted); hyphens: auto; }
+section { border-top: 1px solid var(--line); margin-top: 1.65rem; padding-top: .3rem; }
+main :is(section, h2, h3, h4)[id] { scroll-margin-block-start: 1rem; }
+li + li { margin-top: .45rem; }
+
+.table-scroll { max-width: 100%; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 32rem; }
+td, th { border: 1px solid var(--line); text-align: left; vertical-align: top; padding: .55rem .7rem; }
+th { background: var(--accent-surface); }
+td, th, code, figcaption { overflow-wrap: anywhere; }
+pre {
+  max-width: 100%;
+  padding: .75rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  background: var(--surface);
+}
+
+figure {
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.1rem 0;
+  border: 1px solid var(--line);
+  border-radius: .9rem;
+  background: var(--surface);
+}
+figure img { display: block; border-radius: .85rem .85rem 0 0; }
+.phone-capture { max-inline-size: min(100%, 26rem); }
+figcaption { max-width: 72ch; padding: .65rem .85rem; color: var(--muted); }
+figcaption p, .media-credit { margin: 0 0 .35rem; }
+figcaption a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+.media-credit { color: var(--muted); font-size: .94rem; }
+
+@media (max-width: 45em) {
+  .site-header nav { flex-basis: 100%; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  aside nav {
+    position: static;
+    max-block-size: none;
+    overflow: visible;
+    display: flex;
+    gap: .15rem .4rem;
+    flex-wrap: wrap;
+  }
+  aside strong { width: 100%; }
+  aside nav a { display: inline-flex; align-items: center; min-height: 36px; }
+  .page-intro { padding-inline: clamp(.6rem, 5vw, 1rem); }
+  h1 { font-size: clamp(1.25rem, 7vw, 1.65rem); }
+  ol { padding-inline-start: 1.55rem; }
+  table { min-width: 29rem; }
+}

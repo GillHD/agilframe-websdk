@@ -1,0 +1,32 @@
+name: Сообщить об ошибке
+description: Функция работает иначе, чем ожидается
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Уязвимости отправляйте через Security. Удалите из материалов токены, персональные данные и рабочие URL.
+  - type: input
+    id: version
+    attributes:
+      label: Версия, сборка или SHA
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Компонент и окружение
+      description: Маршрут, ОС, браузер, роль, топология или устройство
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Шаги и результат
+      description: Укажите шаги, ожидаемое и фактическое поведение
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Обезличенные материалы
+      description: Скриншоты, связанные задачи и выдержки из логов

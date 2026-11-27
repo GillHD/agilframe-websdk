@@ -1,0 +1,386 @@
+/* ------------------------------------------------------------------ */
+/* Whiteboard + screen-share annotations (P2, optional)                */
+/* ------------------------------------------------------------------ */
+
+.agil-whiteboard-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--agil-color-overlay) 55%, transparent);
+}
+
+.agil-whiteboard-card {
+  width: min(760px, 100%);
+  max-height: min(100%, 760px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--agil-radius-lg);
+  background: var(--agil-color-surface);
+  border: 1px solid var(--agil-color-border);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--agil-color-shadow) 70%, transparent);
+  color: var(--agil-color-text);
+  overflow: auto;
+}
+
+.agil-whiteboard-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.agil-whiteboard-head .agil-panel-title {
+  margin: 0;
+  font-size: var(--agil-text-lg);
+}
+
+.agil-whiteboard-locked {
+  font-size: var(--agil-text-xs);
+  color: var(--agil-color-warning);
+  background: color-mix(in srgb, var(--agil-color-warning) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--agil-color-warning) 40%, transparent);
+  border-radius: var(--agil-radius-pill);
+  padding: 2px 8px;
+}
+
+.agil-whiteboard-close {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  font-size: 22px !important;
+  line-height: 1;
+}
+
+.agil-whiteboard-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 64px;
+  height: min(54vh, 520px);
+  border-radius: var(--agil-radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  /* Paper surface in every theme: the palette includes dark ink, so the board
+     must stay light to keep all six colors readable for every participant. */
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.agil-whiteboard-canvas-wrap.is-drawing {
+  cursor: crosshair;
+}
+
+.agil-whiteboard-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.agil-whiteboard-canvas[data-tool='eraser'] {
+  cursor: cell;
+}
+
+.agil-whiteboard-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  color: rgba(15, 23, 42, 0.48);
+  font-size: var(--agil-text-sm);
+  pointer-events: none;
+}
+
+.agil-whiteboard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 24px;
+}
+
+.agil-whiteboard-status {
+  font-size: var(--agil-text-xs);
+  color: var(--agil-color-text-muted);
+}
+
+.agil-whiteboard-status[data-kind='error'] {
+  color: var(--agil-color-danger);
+}
+
+.agil-whiteboard-end {
+  margin-left: auto;
+  border-color: color-mix(in srgb, var(--agil-color-danger) 45%, transparent);
+  color: var(--agil-color-danger);
+}
+
+/* Shared stroke toolbar (board + annotations) */
+.agil-stroke-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.agil-stroke-btn,
+.agil-stroke-width,
+.agil-stroke-swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border-radius: var(--agil-radius-sm);
+  border: 1px solid var(--agil-color-border);
+  background: var(--agil-color-control-bg);
+  color: var(--agil-color-control-text);
+  cursor: pointer;
+}
+
+.agil-stroke-btn:hover,
+.agil-stroke-width:hover,
+.agil-stroke-swatch:hover {
+  background: var(--agil-color-control-hover);
+}
+
+.agil-stroke-btn.is-active,
+.agil-stroke-width.is-active {
+  border-color: var(--agil-color-primary);
+  color: var(--agil-color-primary);
+  background: color-mix(in srgb, var(--agil-color-primary) 14%, var(--agil-color-control-bg));
+}
+
+.agil-stroke-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.agil-stroke-colors,
+.agil-stroke-widths {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.agil-stroke-swatch {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 50%;
+  background: var(--agil-swatch, #ef4444);
+  border: 2px solid transparent;
+  /* Two rings keep both the dark "ink" and the light swatches visible on the
+     light board card and on the dark theme surface. */
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    0 0 0 1px rgba(15, 23, 42, 0.22);
+}
+
+.agil-stroke-swatch.is-active {
+  border-color: var(--agil-color-surface);
+  outline: 2px solid var(--agil-swatch, #ef4444);
+  outline-offset: 1px;
+}
+
+.agil-stroke-width {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.agil-stroke-width-dot {
+  display: block;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.agil-stroke-spacer {
+  flex: 1;
+  min-width: 8px;
+}
+
+.agil-stroke-toolbar-annotation {
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--agil-radius-md);
+  background: color-mix(in srgb, var(--agil-color-surface) 92%, transparent);
+  border: 1px solid var(--agil-color-border);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--agil-color-shadow) 60%, transparent);
+}
+
+.agil-stroke-toolbar-annotation .agil-stroke-btn,
+.agil-stroke-toolbar-annotation .agil-stroke-width {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.agil-stroke-toolbar-annotation .agil-stroke-swatch {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+}
+
+/* Screen-share annotation layer */
+.agil-annotation-layer {
+  position: absolute;
+  z-index: 11;
+  border-radius: var(--agil-radius-md);
+  border: 2px solid color-mix(in srgb, var(--agil-color-primary) 70%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--agil-color-primary) 25%, transparent);
+  pointer-events: none;
+  overflow: visible;
+}
+
+.agil-annotation-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.agil-annotation-layer.is-enabled .agil-annotation-canvas {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+.agil-annotation-canvas[data-tool='eraser'] {
+  cursor: cell;
+}
+
+.agil-annotation-toolbar {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 16px);
+  pointer-events: auto;
+}
+
+.agil-annotation-toolbar .agil-stroke-toolbar {
+  flex-wrap: nowrap;
+  max-width: 100%;
+}
+
+.agil-annotation-exit {
+  flex: none;
+}
+
+.agil-annotation-hint {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 16px);
+  padding: 4px 10px;
+  border-radius: var(--agil-radius-pill);
+  background: color-mix(in srgb, var(--agil-color-overlay) 78%, transparent);
+  color: #fff;
+  font-size: var(--agil-text-xs);
+  pointer-events: none;
+}
+
+.agil-annotation-target {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agil-annotation-target[hidden] {
+  display: none;
+}
+
+.agil-annotation-hint-text {
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 720px) {
+  .agil-whiteboard-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .agil-whiteboard-card {
+    width: 100%;
+    max-height: 100%;
+    border-start-start-radius: 16px;
+    border-start-end-radius: 16px;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .agil-whiteboard-canvas-wrap {
+    height: min(48vh, 420px);
+  }
+
+  .agil-stroke-toolbar {
+    gap: 5px;
+  }
+
+  .agil-stroke-btn,
+  .agil-stroke-width {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .agil-annotation-hint-text {
+    display: none;
+  }
+
+  .agil-annotation-toolbar {
+    bottom: 6px;
+    max-width: calc(100% - 8px);
+  }
+
+  .agil-annotation-toolbar .agil-stroke-toolbar {
+    max-width: 72vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Fade on the right edge signals that the phone toolbar scrolls. */
+    mask-image: linear-gradient(to right, #000 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 90%, transparent 100%);
+  }
+
+  .agil-annotation-toolbar .agil-stroke-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+}
